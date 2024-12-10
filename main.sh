@@ -309,15 +309,45 @@ manage_roles() {
 
 # Grant file access to roles (based on directories)
 grant_file_access() {
-    clear
-    echo "========== Grant File Access =========="
-    read -p "Enter the directory to assign to a role: " dir
-    read -p "Enter the role (group) to assign access: " role
-    chown :$role "$dir" # Set the group ownership
-    chmod 770 "$dir"     # Give read/write/execute access to the group
-    echo "Access to $dir granted to $role."
+    while true; do
+        clear
+        current_dir
+        echo "========== Grant File Access =========="
+        
+        # List all files/directories in the current directory with an index
+        echo "Available items in $(pwd):"
+        ls -1 | nl -s '. '
+        
+        # Prompt user to select files/directories by index
+        echo
+        read -p "Enter the indexes of files/directories to assign (comma-separated): " indexes
+        read -p "Enter the role (group) to assign access: " role
+        
+        # Convert indexes to filenames
+        IFS=',' read -ra indices <<< "$indexes"
+        for index in "${indices[@]}"; do
+            item=$(ls -1 | sed -n "${index}p")
+            
+            # Grant access to each selected item
+            if [[ -d "$item" || -f "$item" ]]; then
+                chown :$role "$item" && chmod 770 "$item"
+                echo "Access to '$item' granted to role '$role'."
+            else
+                echo "Error: '$item' does not exist or is not accessible."
+            fi
+        done
+        
+        # Ask if user wants to assign more files/directories
+        read -p "Do you want to assign more files/directories? (y/n): " choice
+        if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
+            break
+        fi
+    done
+    
     read -p "Press Enter to continue..."
 }
+
+
 
 # Manage SSH Access for Users (control access through roles)
 manage_ssh_access() {
@@ -328,18 +358,40 @@ manage_ssh_access() {
     echo "Allowing SSH access for group $role..."
     
     # Edit sshd_config to allow SSH access based on group
-    echo "AllowGroups $role" >> /etc/ssh/sshd_config
+    if grep -q "^AllowGroups" /etc/ssh/sshd_config; then
+        sed -i "/^AllowGroups/s/$/ $role/" /etc/ssh/sshd_config
+    else
+        echo "AllowGroups $role" >> /etc/ssh/sshd_config
+    fi
+
     systemctl restart sshd
-    echo "SSH access for role $role is now enabled."
+    echo "SSH access for role '$role' is now enabled."
+
+    # Retrieve server IP address
+    server_ip=$(hostname -I | awk '{print $1}') # Get the first IP address from the list
+
+    # Provide SSH command instructions to role users
+    echo
+    echo "========== Instructions for Role Users =========="
+    echo "Users in the '$role' role can access this server using the following command:"
+    echo
+    echo "ssh <username>@$server_ip"
+    echo
+    echo "Replace <username> with your assigned username."
+    echo "Ensure that your system has SSH client installed and you have the proper private key or password to authenticate."
+    echo "================================================="
+    echo
+
     read -p "Press Enter to continue..."
 }
+
 
 # Home page menu
 home_page() {
     clear
     current_dir
     echo "====================================="
-    echo "        Welcome to File Manager      "
+    echo "        Welcome to FileShell         "
     echo "====================================="
     echo "1. Change Directory"
     echo "2. Create Item (File/Directory)"
