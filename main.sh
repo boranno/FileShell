@@ -153,7 +153,7 @@ remove_item() {
     echo "========== Remove Item =========="
     list_items
     read -p "Enter the index of the item to remove: " index
-    item_name=$(ls -1 | sed -n "${index}p}")
+    item_name=$(ls -1 | sed -n "${index}p")
     rm -r "$item_name" && echo "Item '$item_name' removed successfully." || echo "Error removing item."
     read -p "Press Enter to continue..."
 }
@@ -165,7 +165,7 @@ rename_item() {
     echo "========== Rename Item =========="
     list_items
     read -p "Enter the index of the item to rename: " index
-    old_name=$(ls -1 | sed -n "${index}p}")
+    old_name=$(ls -1 | sed -n "${index}p")
     read -p "Enter the new name: " new_name
     mv "$old_name" "$new_name" && echo "Item renamed successfully." || echo "Error renaming item."
     read -p "Press Enter to continue..."
@@ -178,9 +178,26 @@ copy_item() {
     echo "========== Copy Item =========="
     list_items
     read -p "Enter the index of the item to copy: " index
-    item_name=$(ls -1 | sed -n "${index}p}")
+    item_name=$(ls -1 | sed -n "${index}p")
     read -p "Enter the destination path: " dest_path
     cp -r "$item_name" "$dest_path" && echo "Item '$item_name' copied successfully to '$dest_path'." || echo "Error copying item."
+    read -p "Press Enter to continue..."
+}
+move_item() {
+    clear
+    current_dir
+    echo "========== Move Item =========="
+    list_items
+    read -p "Enter the index of the item to move: " index
+    item_name=$(ls -1 | sed -n "${index}p")
+    read -p "Enter the destination path: " dest_path
+
+    if [[ -d "$item_name" || -f "$item_name" ]]; then
+        mv "$item_name" "$dest_path" && echo "Item '$item_name' moved successfully to '$dest_path'." || echo "Error moving item."
+    else
+        echo "Error: Item does not exist or is not accessible."
+    fi
+
     read -p "Press Enter to continue..."
 }
 
@@ -386,7 +403,6 @@ manage_ssh_access() {
 }
 
 
-# Home page menu
 home_page() {
     clear
     current_dir
@@ -398,17 +414,18 @@ home_page() {
     echo "3. Remove Item"
     echo "4. Rename Item"
     echo "5. Copy Item"
-    echo "6. Search Files/Directories"
-    echo "7. Display Full Directory Information"
-    echo "8. Manage Users"
-    echo "9. Manage Roles"
-    echo "10. Grant File Access to Roles"
-    echo "11. Manage SSH Access"
-    echo "12. Exit"
+    echo "6. Move Item"                  # New option for Move
+    echo "7. Search Files/Directories"
+    echo "8. Display Full Directory Information"
+    echo "9. Manage Users"
+    echo "10. Manage Roles"
+    echo "11. Grant File Access to Roles"
+    echo "12. Manage SSH Access"
+    echo "13. Exit"
     echo "====================================="
 }
 
-# Main loop
+# Main loop (Updated to call move_item)
 while true; do
     home_page
     read -p "Choose an option: " choice
@@ -418,14 +435,14 @@ while true; do
         3) remove_item ;;
         4) rename_item ;;
         5) copy_item ;;
-        6) search_items ;;
-        7) directory_info ;;
-        8) manage_users ;;       # Option to manage users
-        9) manage_roles ;;       # Option to manage roles
-        10) grant_file_access ;; # Option to grant file access based on roles
-        11) manage_ssh_access ;; # Option to manage SSH access
-        12) echo "Goodbye!" && exit ;;
+        6) move_item ;;             # Call move_item function
+        7) search_items ;;
+        8) directory_info ;;
+        9) manage_users ;;
+        10) manage_roles ;;
+        11) grant_file_access ;;
+        12) manage_ssh_access ;;
+        13) echo "Goodbye!" && exit ;;
         *) echo "Invalid choice. Try again." ;;
     esac
 done
-
