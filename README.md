@@ -130,7 +130,7 @@ This tool makes system-level changes. Use with caution and always:
 
 ## 👨‍💻 Author
 
-Your Name - [@Boranno Golder](https://github.com/boranno)
+Your Name - [Boranno Golder](https://github.com/boranno)
 
 ## 🙏 Acknowledgments
 
