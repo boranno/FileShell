@@ -1,42 +1,57 @@
 FileShell
+# FileShell
 
 An interactive, menu-driven Bash tool for file, user, and role (group) management on Linux — perform common admin tasks from a single terminal interface without typing long command sequences.
 
 FileShell is useful for quickly navigating directories, organizing files, managing users and groups, and controlling role-based access and SSH login — all from a simple numbered menu.
 
-Table of contents
+## Table of Contents
 
-Features
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Menu Overview](#menu-overview)
+- [Examples](#examples)
+- [Security Notes & Warnings](#security-notes--warnings)
+- [Troubleshooting](#troubleshooting)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
-Requirements
+## Features
 
-Installation
+### Directory Navigation
+- View current working directory
+- List files and directories with numbered indexes
+- Move up one level, enter a subdirectory by index, or jump to an absolute path
 
-Usage
+### File & Folder Operations
+- Create single or multiple files/directories (manual names or pattern + count)
+- Rename, copy, move, and remove items by index
+- Detailed, human-readable directory listing (sizes; directories shown first)
 
-Menu overview
+### Search
+- Recursive search for files and directories from the current directory using name patterns
 
-Examples
+### User Management
+- List system users
+- Add users with password entry
+- Remove users
+- Assign users to roles (Linux groups)
 
-Security notes & warnings
+### Role (Group) Management
+- List groups
+- Create/delete groups
+- Show group members
 
-Roadmap
+### Role-Based File Access
+- Select files/directories by index and grant access to a role by changing group ownership and permission (example: 770)
 
-Contributing
+### SSH Access Management
+- Allow SSH access for a role by editing AllowGroups in `/etc/ssh/sshd_config` and restarting sshd (requires root)
+- Display example SSH connection string (includes server IP/hostname)
 
-License
-
-Features
-
-Directory navigation
-
-View current working directory.
-
-List files and directories with numbered indexes.
-
-Move up one level, enter a subdirectory by index, or jump to an absolute path.
-
-File & folder operations
 
 Create single or multiple files/directories (manual names or pattern + count).
 
@@ -94,7 +109,7 @@ Installation
 
 Clone the repository and make the script executable:
 
-git clone https://github.com/<your-username>/fileshell.git
+git clone https://github.com/boranno/fileshell.git
 cd fileshell
 chmod +x fileshell.sh
 
@@ -249,4 +264,4 @@ This project is licensed under the MIT License. See LICENSE for details.
 
 Author / Contact
 
-Created by <your-username> — replace with your GitHub handle in the repo and README.
+Created by https://github.com/boranno 
