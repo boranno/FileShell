@@ -1,168 +1,252 @@
 FileShell
-FileShell is an interactive Bash-based file, user, and role management tool for Linux that lets you perform common admin tasks from a single menu-driven terminal interface.​
-It is useful for quickly navigating directories, organizing files, managing users and groups, and controlling role-based access and SSH login without typing long command sequences.​
+
+An interactive, menu-driven Bash tool for file, user, and role (group) management on Linux — perform common admin tasks from a single terminal interface without typing long command sequences.
+
+FileShell is useful for quickly navigating directories, organizing files, managing users and groups, and controlling role-based access and SSH login — all from a simple numbered menu.
+
+Table of contents
 
 Features
-Directory navigation:
 
-View the current working directory.
+Requirements
+
+Installation
+
+Usage
+
+Menu overview
+
+Examples
+
+Security notes & warnings
+
+Roadmap
+
+Contributing
+
+License
+
+Features
+
+Directory navigation
+
+View current working directory.
 
 List files and directories with numbered indexes.
 
-Move one level up, enter a subdirectory by index, or jump to a specific path.​
+Move up one level, enter a subdirectory by index, or jump to an absolute path.
 
-File and folder operations:
+File & folder operations
 
-Create single or multiple files and directories, either by manually provided names or using a pattern with a count.
+Create single or multiple files/directories (manual names or pattern + count).
 
-Rename, copy, move, and remove files or directories by selecting them via index.
+Rename, copy, move, and remove items by index.
 
-Display a detailed, human-readable directory listing with sizes and directories grouped first.​
+Detailed, human-readable directory listing (sizes; directories shown first).
 
-Search:
+Search
 
-Search for files and directories recursively from the current directory using a name pattern.​
+Recursive search for files and directories from the current directory using name patterns.
 
-User management:
+User management
 
-View system users.
+List system users.
 
-Add users with passwords.
+Add users with password entry.
 
 Remove users.
 
-Assign users to roles (Linux groups).​
+Assign users to roles (Linux groups).
 
-Role (group) management:
+Role (group) management
 
-View existing roles (groups).
+List groups.
 
-Create and delete roles.
+Create / delete groups.
 
-View users belonging to a specific role.​
+Show group members.
 
-Role-based file access:
+Role-based file access
 
-Select files/directories by index and grant access to a role by changing group ownership and permissions (e.g., 770).​
+Select files/directories by index and grant access to a role by changing group ownership and permission (example: 770).
 
-SSH access management:
+SSH access management
 
-Allow SSH access for a specific role by updating AllowGroups in sshd_config and restarting sshd.
+Allow SSH access for a role by editing AllowGroups in /etc/ssh/sshd_config and restarting sshd (requires root).
 
-Display the SSH command pattern (including server IP) for users in that role.​
-
-Menu overview
-When you run the script, the home menu shows options similar to:
-
-1 – Change Directory
-
-2 – Create Item (File/Directory)
-
-3 – Remove Item
-
-4 – Rename Item
-
-5 – Copy Item
-
-6 – Move Item
-
-7 – Search Files/Directories
-
-8 – Display Full Directory Information
-
-9 – Manage Users
-
-10 – Manage Roles
-
-11 – Grant File Access to Roles
-
-12 – Manage SSH Access
-
-13 – Exit
-
-Menu-driven CLI tools typically expose key actions as numbered options so users can quickly trigger operations by entering a number.​
+Display example SSH connection string (includes server IP/hostname).
 
 Requirements
-Operating system:
 
-Linux distribution with Bash available.
+Operating system
 
-Permissions:
+Any Linux distribution with Bash (e.g., Debian/Ubuntu, Fedora, CentOS, Arch).
 
-Root or sudo privileges required for user, group, permission, and SSH configuration tasks (for commands like useradd, userdel, usermod, groupadd, groupdel, chown, chmod, and editing /etc/ssh/sshd_config).​
+Permissions
 
-Dependencies:
+Root or sudo required for user/group/permission/SSHD changes (useradd, userdel, usermod, groupadd, groupdel, chown, chmod, editing /etc/ssh/sshd_config, restarting sshd).
 
-Standard Unix utilities: ls, pwd, cd, sed, nl, find, cp, mv, rm, getent, hostname, systemctl (for managing sshd).​
+Dependencies
+
+Standard Unix utilities: ls, pwd, cd, sed, nl, find, cp, mv, rm, getent, hostname, systemctl (for sshd) — all commonly available on modern Linux systems.
 
 Installation
-Clone the repository:
 
-bash
+Clone the repository and make the script executable:
+
 git clone https://github.com/<your-username>/fileshell.git
 cd fileshell
-Make the script executable:
-
-bash
 chmod +x fileshell.sh
-(Recommended) Run with sudo for full functionality:
 
-bash
+
+Recommended: Run with sudo for full functionality:
+
 sudo ./fileshell.sh
-Cloning a GitHub repository, marking a Bash script as executable, and running it from the project directory are standard steps for installing CLI tools.​
 
 Usage
-Start FileShell:
 
-bash
+Start FileShell from the project directory:
+
 ./fileshell.sh
-Use the on-screen menu:
 
-Navigate directories:
 
-Choose “Change Directory” to move one level up, enter a subdirectory by index, or set an absolute path.
+When launched, FileShell displays a numbered menu. Enter the number for the action you want, follow prompts, and press Enter. The main menu loop repeats until you choose Exit.
 
-Manage files and directories:
+Menu overview
 
-Use “Create Item” to create one or more files/directories (manual or pattern-based).
+Typical home menu:
 
-Use “Remove Item”, “Rename Item”, “Copy Item”, and “Move Item” to manipulate items by index in the current directory.
+1  – Change Directory
+2  – Create Item (File/Directory)
+3  – Remove Item
+4  – Rename Item
+5  – Copy Item
+6  – Move Item
+7  – Search Files/Directories
+8  – Display Full Directory Information
+9  – Manage Users
+10 – Manage Roles
+11 – Grant File Access to Roles
+12 – Manage SSH Access
+13 – Exit
 
-Explore and inspect:
 
-Use “Search Files/Directories” to run a recursive search from the current directory using a search term.
+Menu-driven CLI tools expose actions as numbered options so users can trigger operations quickly by entering the number.
 
-Use “Display Full Directory Information” to see a detailed listing with sizes and grouped directories.​
+Examples
+1) Change directory
 
-Admin tasks:
+Choose option 1.
 
-“Manage Users” to list users, add/remove users, and assign roles (groups).
+You will be prompted to:
 
-“Manage Roles” to list, create, delete roles, and view users in a role.
+Enter .. to go up one level,
 
-“Grant File Access to Roles” to assign group ownership and restrictive permissions to selected files/directories.
+Enter an index to go into a listed subdirectory,
 
-“Manage SSH Access” to allow SSH login for a specific group and show connection instructions.​
+Or give an absolute path (e.g., /var/www).
 
-Interactive file managers and admin scripts typically combine navigation, manipulation, and admin features into a loop that repeats until the user chooses to exit.​
+2) Create multiple files with a pattern
 
-Security notes
-Run administrative options only when you understand the impact on system users, groups, and SSH access.
+Option 2 → choose File → select “pattern” mode → enter base name and count:
 
-Changing AllowGroups and restarting sshd directly affects which users can log in; ensure you do not accidentally block required access.​
+Enter base name: note
+Enter count: 3
+Created: note1, note2, note3
 
-Use strong passwords when creating users and follow your organization’s policies for group design and file permissions.​
+3) Assign role-based access to a directory
 
-Roadmap / ideas
-Potential future improvements:
+Option 11 → pick a directory by index → type the role (group) name → FileShell will:
 
-Add log output for critical actions (user creation, deletion, permission changes).
+chgrp -R role /path/to/item
 
-Add dry-run mode for sensitive operations.
+chmod -R 770 /path/to/item
+(This grants full access to owner + group, none for others.)
 
-Add configuration file support for default roles, base directories, or permission schemes.
+4) Allow SSH only for a role
 
-Add language or theme customization for the menu UI.​
+Option 12 → choose role name (group).
+
+FileShell will append or update AllowGroups role1 role2 in /etc/ssh/sshd_config and attempt to restart sshd:
+
+# Example output:
+Updated /etc/ssh/sshd_config: AllowGroups admin developers
+Restarting sshd...
+sshd restarted successfully
+SSH connection example for role members:
+ssh username@server.example.com
+
+
+Important: FileShell will backup /etc/ssh/sshd_config before changes (e.g., /etc/ssh/sshd_config.bak.fileshell).
+
+Commands & behaviour (short)
+
+List with indexes — items are shown with numeric indexes so subsequent operations accept index input rather than long paths.
+
+Search — uses find with user-provided pattern; supports wildcard patterns.
+
+User add — runs useradd, optionally passwd to set password (interactively).
+
+Group operations — groupadd, groupdel, getent group.
+
+SSH — edits AllowGroups setting and restarts sshd via systemctl restart sshd (or service ssh restart fallback).
+
+Security notes & warnings
+
+Run admin options only when you understand the impact. Deleting users, groups, or altering sshd may lock out accounts or break services.
+
+FileShell edits /etc/ssh/sshd_config and restarts sshd. Always verify the file before a restart; FileShell attempts to back up the file automatically.
+
+Use strong passwords when creating users. Prefer --create-home and set UMASK/permissions according to policy.
+
+Permission examples like 770 are restrictive — ensure this fits your use-case. Misconfigured group ownership or permissions can prevent system services or users from accessing needed files.
+
+Always test in a safe environment (VM/container) if unsure.
+
+Troubleshooting
+
+sshd failed to restart after editing /etc/ssh/sshd_config: Restore the backup:
+
+sudo cp /etc/ssh/sshd_config.bak.fileshell /etc/ssh/sshd_config
+sudo systemctl restart sshd
+
+
+useradd errors: Ensure script is run as root or with sudo.
+
+Missing utilities: Install typical coreutils (apt, dnf, or pacman as appropriate).
+
+Roadmap / Ideas
+
+Possible future improvements:
+
+Add logging for critical actions (user creation/deletion, permission changes).
+
+Add a dry-run mode for sensitive operations.
+
+Add configuration file support (default roles, base dirs, permission schemes).
+
+Add language/theme customization for the menu UI.
+
+Add unit tests and CI checks to validate sshd config edits before restarting.
+
+Contributing
+
+Contributions welcome. Please open issues for bugs or feature requests and submit pull requests for improvements. Keep changes small and document behavior. If you add features that require new external tools, update the README requirements.
+
+Suggested workflow:
+
+Fork the repo
+
+Create feature branch
+
+Test changes locally (preferably in a VM)
+
+Submit PR with a clear description and tested scenarios
 
 License
-This project is licensed under the MIT License. See the LICENSE file for details
+
+This project is licensed under the MIT License. See LICENSE for details.
+
+Author / Contact
+
+Created by <your-username> — replace with your GitHub handle in the repo and README.
